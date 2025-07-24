@@ -3,45 +3,44 @@ using todoCli.Data;
 
 Console.WriteLine("Welcome to ToDo application: ");
 
-Console.WriteLine("Add(a), Remove(r), Show(s), Quit(q)");
-var userInput = Console.ReadLine(); 
-
 var db = new ApplicationDbContext();
 
 while(true) {
+  var todoList = db.TodoItems.ToList();
 
-  switch(userInput) {
-    case "a":
-      Console.WriteLine("Enter item title: ");
-      var item = Console.ReadLine();
+  Console.Write("Add(a), Remove(r), Show(s), Quit(q): ");
+  var userInput = Console.ReadLine(); 
 
-      var newItem = new TodoItem
-      {
-        Title = item,
-        IsDone = false
-      };
+  if(userInput == "add") {
+    Console.Write("Enter new item: ");
+    var newItem = Console.ReadLine();
 
-      db.TodoItems.Add(newItem);
-      db.SaveChanges();
-      break;
+    var item = new TodoItem {Title = newItem};
 
-    case "r":
-      Console.WriteLine("REMOVEEEE");
-      break;
+    db.TodoItems.Add(item);
+    db.SaveChanges();
+  } 
+  else if(userInput == "remove") {
 
-    case "s":
-      var todoList = db.TodoItems.ToList();
-      foreach(var todo in todoList) {
-        Console.WriteLine($"{todo.Id} - {todo.Title}");
-      }
-      break;
+    for(var i = 0; i < todoList.Count; i++) {
+      Console.WriteLine($"{i + 1} - {todoList[i].Title}");
+    }
 
-    case "q":
-      Console.WriteLine("QUITTTT");
-      break;
+    Console.WriteLine("Enter index of item to remove: ");
+    int itemToDelete = int.Parse(Console.ReadLine());
 
-    default:
-      Console.WriteLine("Unknown command!");
-      break;
+    db.TodoItems.Remove(todoList[itemToDelete - 1]);
+    db.SaveChanges();
+
+  }
+  else if(userInput == "show") {
+
+    for(var i = 0; i < todoList.Count; i++) {
+      Console.WriteLine($"{i + 1} - {todoList[i].Title}");
+    }
+  }
+  else if(userInput == "quit") {
+    Console.WriteLine("BYEEEE");
+    break;
   }
 }

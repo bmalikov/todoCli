@@ -140,3 +140,4 @@
 /home/boris/Desktop/todoCli/obj/Debug/net8.0/todoCli.pdb
 /home/boris/Desktop/todoCli/obj/Debug/net8.0/todoCli.genruntimeconfig.cache
 /home/boris/Desktop/todoCli/obj/Debug/net8.0/ref/todoCli.dll
+/home/boris/Desktop/todoCli/obj/Debug/net8.0/todoCli.sourcelink.json
