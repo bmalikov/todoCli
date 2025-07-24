@@ -1,5 +1,6 @@
 ﻿using todoCli.Models;
 using todoCli.Data;
+using todoCli.Services;
 
 Console.WriteLine("Welcome to ToDo application: ");
 
@@ -7,6 +8,9 @@ var db = new ApplicationDbContext();
 
 while(true) {
   var todoList = db.TodoItems.ToList();
+  var todoService = new TodoService(todoList);
+
+  todoService.ShowList();
 
   Console.Write("Add(a), Remove(r), Show(s), Quit(q): ");
   var userInput = Console.ReadLine(); 
@@ -21,10 +25,7 @@ while(true) {
     db.SaveChanges();
   } 
   else if(userInput == "remove") {
-
-    for(var i = 0; i < todoList.Count; i++) {
-      Console.WriteLine($"{i + 1} - {todoList[i].Title}");
-    }
+    todoService.ShowList();
 
     Console.WriteLine("Enter index of item to remove: ");
     int itemToDelete = int.Parse(Console.ReadLine());
@@ -34,10 +35,7 @@ while(true) {
 
   }
   else if(userInput == "show") {
-
-    for(var i = 0; i < todoList.Count; i++) {
-      Console.WriteLine($"{i + 1} - {todoList[i].Title}");
-    }
+    todoService.ShowList();
   }
   else if(userInput == "quit") {
     Console.WriteLine("BYEEEE");
