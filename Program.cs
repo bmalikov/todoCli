@@ -2,7 +2,10 @@
 using todoCli.Data;
 using todoCli.Services;
 
+Console.WriteLine("#############################");
 Console.WriteLine("Welcome to ToDo application: ");
+Console.WriteLine("#############################");
+Console.WriteLine();
 
 var db = new ApplicationDbContext();
 
@@ -19,10 +22,14 @@ while(true) {
 
   // SHOW NUMBER OF COMPLETED AND TOTAL NUMBER OD TASKS
   todoService.ShowDoneTasks(completedTodo, numberOfItems);
+  Console.WriteLine("");
 
   // ASK USER TO CHOOSE ACTION
   var userInput = todoService.UserInput
     ("Add(a), Remove(r), Done(d), Show(s), Quit(q):");
+  Console.WriteLine
+    ("---------------------------------------------");
+  Console.WriteLine("");
 
   // IF ADD
   if(userInput == "add") {
@@ -48,44 +55,66 @@ while(true) {
 
     // show list with index
     todoService.ShowList(); 
+    Console.WriteLine("");
 
-    // enter item index
-    var itemDone = todoService.UserInputIntReturn
-      ("Enter index of item to mark done: ");
+    // check if there is any item in list
+    if(todoList.Count() == 0) {
+      Console.WriteLine("List is empty!");
+    }
+    else {
 
-    // add true to item
-    todoList[itemDone].IsDone = true;
+      // enter item index
+      int itemDone = todoService.UserInputIntReturn
+        ("Enter index of item to mark done: ");
 
-    // save sum of completed todos
-    completedTodo = todoService.isDone(completedTodo);
+      if(itemDone <= todoList.Count()) {
+        // add true to item
+        todoList[itemDone - 1].IsDone = true;
 
-    // save changes
-    db.SaveChanges();
+        // save sum of completed todos
+        completedTodo = todoService.isDone(completedTodo);
+
+        // save changes
+        db.SaveChanges();
+      }
+      else {
+          Console.WriteLine("That item index does not exist!");
+      }
+    }
   }
 
   // IF REMOVE
   else if(userInput == "remove") {
-    // show items in list
-    todoService.ShowList();
+    // chech if list is empty
+    if(todoList.Count() == 0) {
+      Console.WriteLine("Can't remove, list is already empty");
+    }
+    else {
+      // show items in list
+      todoService.ShowList();
+      Console.WriteLine("");
 
-    // enter item index converted in int
-    var itemRemove = todoService.userInputIntReturn
-      ("Enter index of item to remove: ");
+      // enter item index converted in int
+      var itemRemove = todoService.UserInputIntReturn
+        ("Enter index of item to rilteremove: ");
 
-    // update database and save changes
-    db.TodoItems.Remove(todoList[itemToDelete - 1]);
-    db.SaveChanges();
+      // update database and save changes
+      db.TodoItems.Remove(todoList[itemRemove - 1]);
+      db.SaveChanges();
+    }
   }
-
   // IF SHOW
   else if(userInput == "show") {
     // show items in list
     todoService.ShowList();
+    Console.WriteLine("");
   }
-
   // IF QUIT
   else if(userInput == "quit") {
     Console.WriteLine("BYEEEE");
     break;
+  }
+  else {
+    Console.WriteLine("Please enter wanted action");
   }
 }

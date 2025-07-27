@@ -14,14 +14,21 @@ namespace todoCli.Services {
     // RETURN USER INPUT
     public string UserInput(string message) {
       Console.Write(message);
-      return Console.ReadLine();  
+      return Console.ReadLine() ?? "";  
     }
 
     // RETURN USER INPUT IN INT
     public int UserInputIntReturn(string message) {
-      Console.Write(message);
-      var ParseToNumber = int.Parse(Console.ReadLine());
-      return ParseToNumber;
+
+      while(true) {
+        Console.Write(message);
+        var userInput = Console.ReadLine(); 
+        if(int.TryParse(userInput, out int number)) {
+          return number;
+        }  
+        Console.WriteLine
+          ("You need to enter number!!!");
+      }
     }
 
     // PRINT LIST OF ITEMS
@@ -52,8 +59,8 @@ namespace todoCli.Services {
 
     // SHOW NUMBER OF COMPLETED AND TOTAL NUMBER OD TASKS
     public void ShowDoneTasks(int numberOfItems, int completedTodo) {
-       Console.WriteLine($"Completed tasks: {numberOfItems}/{completedTodo}"); 
-      }
+      Console.WriteLine($"Completed tasks: {numberOfItems}/{completedTodo}"); 
+    }
   }
 }
 
