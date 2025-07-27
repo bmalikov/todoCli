@@ -35,9 +35,9 @@ namespace todoCli.Services {
     public void ShowList() {
       for(int i = 0; i < _todoList.Count; i++) {
         Console.WriteLine
-          ($"{i + 1} - {_todoList[i].Title} --> {_todoList[i].IsDone}");  
-      }
-    }
+          ($"{i + 1} - {_todoList[i].Title} [{(_todoList[i].IsDone ? "x" : " ")}]");  
+      } 
+    } 
 
     // SUM OF ITEMS
     public int itemCounter(int numberOfItems) {

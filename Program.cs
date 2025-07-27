@@ -2,6 +2,7 @@
 using todoCli.Data;
 using todoCli.Services;
 
+Console.ForegroundColor = ConsoleColor.Cyan;
 Console.WriteLine("#############################");
 Console.WriteLine("Welcome to ToDo application: ");
 Console.WriteLine("#############################");
@@ -20,10 +21,12 @@ while(true) {
   numberOfItems = todoService.itemCounter(numberOfItems);
   completedTodo = todoService.isDone(completedTodo);
 
+  Console.ForegroundColor = ConsoleColor.Red;
   // SHOW NUMBER OF COMPLETED AND TOTAL NUMBER OD TASKS
   todoService.ShowDoneTasks(completedTodo, numberOfItems);
   Console.WriteLine("");
 
+  Console.ForegroundColor = ConsoleColor.Gray;
   // ASK USER TO CHOOSE ACTION
   var userInput = todoService.UserInput
     ("Add(a), Remove(r), Done(d), Show(s), Quit(q):");
@@ -96,7 +99,7 @@ while(true) {
 
       // enter item index converted in int
       var itemRemove = todoService.UserInputIntReturn
-        ("Enter index of item to rilteremove: ");
+        ("Enter index of item to remove: ");
 
       // update database and save changes
       db.TodoItems.Remove(todoList[itemRemove - 1]);

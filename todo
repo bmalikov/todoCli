@@ -5,12 +5,6 @@ todoCli - TODO
 
 - omogućiti razne liste (Todo, shoping list...)
 
-- malo obojati tekst (kao dizajn)
-
 - omogućiti i kategorije (npr. todoCli -> Dizajn, Funk  cionalnosti - > Kreiraj novu listu)
 
-- umjesto teksta, checkbox za šta je riješeno
 
-- riješiti warninge
-
-- riješiti grešku kod Done, kada se upiše slovo ili broj izvan range se app sruši
