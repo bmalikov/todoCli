@@ -71,8 +71,12 @@ while(true) {
         ("Enter index of item to mark done: ");
 
       if(itemDone <= todoList.Count()) {
-        // add true to item
-        todoList[itemDone - 1].IsDone = true;
+        var key = Console.ReadKey(true).Key; // čita pritisnutu tipku i sprema u varijablu, true znači da ne ispisuje tipku na ekran  
+
+        if(key == ConsoleKey.Spacebar) {
+          // add true to item
+          todoList[itemDone - 1].IsDone = !todoList[itemDone - 1].IsDone; // ! će prebaciti na true ako je false i obrnuto
+        }
 
         // save sum of completed todos
         completedTodo = todoService.isDone(completedTodo);
@@ -81,7 +85,7 @@ while(true) {
         db.SaveChanges();
       }
       else {
-          Console.WriteLine("That item index does not exist!");
+        Console.WriteLine("That item index does not exist!");
       }
     }
   }
