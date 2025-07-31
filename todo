@@ -5,6 +5,12 @@ todoCli - TODO
 
 - omogućiti razne liste (Todo, shoping list...)
 
-- omogućiti i kategorije (npr. todoCli -> Dizajn, Funk  cionalnosti - > Kreiraj novu listu)
+- omogućiti i kategorije (npr. todoCli -> Dizajn, Funkcionalnosti - > Kreiraj novu listu)
+
+- napraviti mogućnost da neke stavke imaju prioritet
+
+- omogućiti da sve što ima logike ima description (da ga se može foldat)
+
+- vrijeme kreiranja i rok do kada se mora završiti
 
 

@@ -14,126 +14,57 @@ namespace todoCli.App {
     }
 
     public void Run() {
+
+      bool running = true;
+
       WelcomeMessage();
 
-      TodoCounter();
+      ShowDoneAndTotalTodos();
 
-      while(true) {
-        var userInput = DisplayMainMenuAndGetInput();
+      while(running) {
 
-        var todoList = db.TodoItems.ToList();
-        var todoService = new TodoService(todoList);
+        Console.WriteLine("Add(a), Done(d), Remove(r), Show(s), Quit(q): ");    
+        Console.WriteLine("----------------------------------------------");
+        ConsoleKeyInfo key = Console.ReadKey(true);
 
-        // IF ADD
-        if(userInput == "add") {
+        switch(key.KeyChar)
+        {
+          case 'a':
+            AddTodoItem();
+            break;
 
-          // new item title
-          var newItem = todoService.UserInput
-            ("Enter item title: ");
+          case 'd':
+            ToogleTodoDoneOption();
+            break;
 
-          // instance new object
-          var todo = new TodoItem 
-          {
-            Title = newItem,
-            IsDone = false
-          };
+          case 'r':
+            RemoveTodoItem();
+            break;
 
-          // add to database and save
-          db.TodoItems.Add(todo);
-          db.SaveChanges();
-        } 
-        // IF DONE
-        else if(userInput == "done") {
+          case 's':
+            ShowTodoList();
+            ShowDoneAndTotalTodos();
+            break;
 
-          // show list with index
-          todoService.ShowList(); 
-          Console.WriteLine("");
+          case 'q':
+            Console.WriteLine("Byeeeee!!!");
+            running = false; // prekida while petlju
+            break;
 
-          // check if there is any item in list
-          if(todoList.Count() == 0) {
-            Console.WriteLine("List is empty!");
-          }
-          else {
-
-            // enter item index
-            int itemDone = todoService.UserInputIntReturn
-              ("Enter index of item to mark done: ");
-
-            if(itemDone <= todoList.Count()) {
-//              var key = Console.ReadKey(true).Key; // čita pritisnutu tipku i sprema u varijablu, true znači da ne ispisuje tipku na ekran  
-
-                todoList[itemDone - 1].IsDone = !todoList[itemDone - 1].IsDone; // ! će prebaciti na true ako je false i obrnuto
- //             if(key == ConsoleKey.Spacebar) {
- //               // add true to item
- //             }
-
-              // save changes
-              db.SaveChanges(); 
-            }
-            else {
-              Console.WriteLine("That item index does not exist!");
-            }
-          }
-        }
-        // IF REMOVE
-        else if(userInput == "remove") {
-          // chech if list is empty
-          if(todoList.Count() == 0) {
-            Console.WriteLine("Can't remove, list is already empty");
-          }
-          else {
-            // show items in list
-            todoService.ShowList();
-            Console.WriteLine("");
-
-            // enter item index converted in int
-            var itemRemove = todoService.UserInputIntReturn
-              ("Enter index of item to remove: ");
-
-            // update database and save changes
-            db.TodoItems.Remove(todoList[itemRemove - 1]);
-            db.SaveChanges();
-          }
-        }
-        // IF SHOW
-        else if(userInput == "show") {
-          // show items in list
-          todoService.ShowList();
-          Console.WriteLine("");
-
-          TodoCounter();
-        }
-        // IF QUIT
-        else if(userInput == "quit") {
-          Console.WriteLine("BYEEEE");
-          break;
-        }
-        else {
-          Console.WriteLine("Please enter wanted action");
+          default: 
+            Console.WriteLine("Please enter wanted action");
+            break;
         }
       }    
-    } // === Run() ===
+    } 
 
     public void WelcomeMessage() {
-      Console.WriteLine("###################");
-      Console.WriteLine("Welcome to ToDo App");
-      Console.WriteLine("###################");
+      Console.WriteLine("####################");
+      Console.WriteLine("Welcome To Todo App!");
+      Console.WriteLine("####################");
     }
 
-    public string DisplayMainMenuAndGetInput() {
-
-      var todoList = db.TodoItems.ToList();
-      var todoService = new TodoService(todoList);
-
-      var userInput = todoService.UserInput
-        ("Add(a), Remove(r), Done(d), Show(s), Quit(q):");
-      Console.WriteLine
-        ("---------------------------------------------");
-      Console.WriteLine("");
-      return userInput;
-    }
-
-    public void TodoCounter() {
+    public void ShowDoneAndTotalTodos() {
       // VARIABLES
       int numberOfItems = 0;
       int completedTodo = 0; 
@@ -147,6 +78,85 @@ namespace todoCli.App {
 
       // SHOW NUMBER OF COMPLETED AND TOTAL NUMBER OD TASKS
       todoService.ShowDoneTasks(completedTodo, numberOfItems);
+      Console.WriteLine("");
+    }
+
+    public void AddTodoItem() {
+
+      var todoList = db.TodoItems.ToList();
+      var todoService = new TodoService(todoList);
+
+      var newItemTitle = todoService.UserInput("Enter item title: ");
+
+      var todo = new TodoItem
+      {
+        Title = newItemTitle,
+              IsDone = false
+      };
+      // add to database and save
+      db.TodoItems.Add(todo);
+      db.SaveChanges();
+    }
+
+    public void ToogleTodoDoneOption() {
+
+      var todoList = db.TodoItems.ToList();
+      var todoService = new TodoService(todoList);
+
+      // show list with index
+      todoService.ShowList(); 
+      Console.WriteLine("");
+
+      // check if there is any item in list
+      if(todoList.Count() == 0) {
+        Console.WriteLine("List is empty!");
+      }
+      else {
+        // enter item index
+        int itemDone = todoService.UserInputIntReturn
+          ("Enter index of item to mark done: ");
+
+        if(itemDone <= todoList.Count()) {
+          todoList[itemDone - 1].IsDone = !todoList[itemDone - 1].IsDone; // ! će prebaciti na true ako je false i obrnuto
+
+          // save changes
+          db.SaveChanges(); 
+        }
+        else {
+          Console.WriteLine("That item index does not exist!");
+        }
+      }
+    }
+
+    public void RemoveTodoItem() {
+
+      var todoList = db.TodoItems.ToList();
+      var todoService = new TodoService(todoList);
+
+      // chech if list is empty
+      if(todoList.Count() == 0) {
+        Console.WriteLine("Can't remove, list is already empty");
+      }
+      else {
+        // show items in list
+        todoService.ShowList();
+        Console.WriteLine("");
+
+        // enter item index converted in int
+        var itemRemove = todoService.UserInputIntReturn
+          ("Enter index of item to remove: ");
+
+        // update database and save changes
+        db.TodoItems.Remove(todoList[itemRemove - 1]);
+        db.SaveChanges();
+      }
+    }
+
+    public void ShowTodoList() {
+      var todoList = db.TodoItems.ToList();
+      var todoService = new TodoService(todoList);
+
+      todoService.ShowList();
       Console.WriteLine("");
     }
   }
