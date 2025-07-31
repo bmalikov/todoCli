@@ -60,12 +60,12 @@ namespace todoCli.App {
               ("Enter index of item to mark done: ");
 
             if(itemDone <= todoList.Count()) {
-              var key = Console.ReadKey(true).Key; // čita pritisnutu tipku i sprema u varijablu, true znači da ne ispisuje tipku na ekran  
+//              var key = Console.ReadKey(true).Key; // čita pritisnutu tipku i sprema u varijablu, true znači da ne ispisuje tipku na ekran  
 
-              if(key == ConsoleKey.Spacebar) {
-                // add true to item
                 todoList[itemDone - 1].IsDone = !todoList[itemDone - 1].IsDone; // ! će prebaciti na true ako je false i obrnuto
-              }
+ //             if(key == ConsoleKey.Spacebar) {
+ //               // add true to item
+ //             }
 
               // save changes
               db.SaveChanges(); 
